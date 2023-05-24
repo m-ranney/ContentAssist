@@ -48,7 +48,11 @@ def main():
         news_embeddings = embeddings.embed_documents([company_news])
 
         # Create Annoy index
-        vector_db = Annoy()
+        vector_db = Annoy(embedding_function=embeddings.embed_documents,
+                  index=100,
+                  metric='euclidean',
+                  docstore=None,
+                  index_to_docstore_id=None)
         
         for i, embedding in enumerate(resume_embeddings):
             vector_db.add_vector(i, embedding)
