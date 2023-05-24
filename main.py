@@ -42,9 +42,9 @@ def main():
     if st.button('Generate Cover Letter'):
         # Generate embeddings from the resume, job description, and news
         embeddings = OpenAIEmbeddings()
-        resume_embeddings = embeddings.create_doc_embedding(resume_pages)
-        job_description_embeddings = embeddings.create_doc_embedding(job_description_pages)
-        news_embeddings = embeddings.create_doc_embedding(company_news)
+        resume_embeddings = embeddings.embed_documents(resume_pages)
+        job_description_embeddings = embeddings.embed_documents(job_description_pages)
+        news_embeddings = embeddings.embed_test(company_news)
 
         # Use the embeddings to generate a cover letter
         chat = ChatOpenAI()
