@@ -3,3 +3,4 @@ requests
 openai
 langchain
 pypdf
+bs4
