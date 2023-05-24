@@ -55,11 +55,11 @@ def main():
                   index_to_docstore_id=None)
         
         for i, embedding in enumerate(resume_embeddings):
-            vector_db.add_vector(i, embedding)
+            vector_db.add_item(i, embedding)
         for i, embedding in enumerate(job_description_embeddings, start=len(resume_embeddings)):
-            vector_db.add_vector(i, embedding)
+            vector_db.add_item(i, embedding)
         for i, embedding in enumerate(news_embeddings, start=len(resume_embeddings)+len(job_description_embeddings)):
-            vector_db.add_vector(i, embedding)
+            vector_db.add_item(i, embedding)
         
         vector_db.build()
 
