@@ -48,7 +48,7 @@ def main():
         news_embeddings = embeddings.embed_documents([company_news])
 
         # Create Annoy index
-        vector_db = Annoy(dimensions=len(resume_embeddings[0]))
+        vector_db = Annoy()
         
         for i, embedding in enumerate(resume_embeddings):
             vector_db.add_vector(i, embedding)
