@@ -60,10 +60,10 @@ def main():
         # Generate the cover letter
         chat = ChatOpenAI(streaming=True, callbacks=[StreamingStdOutCallbackHandler()], temperature=1)
         
-        chat(messages)
+        response = chat(messages)
     
         # Display the cover letter
-        st.markdown(messages)
+        st.markdown(response)
 
 if __name__ == "__main__":
     main()
