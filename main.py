@@ -65,7 +65,7 @@ def main():
         formatted_content = '\n'.join(response.content.splitlines())
         
         # Display the cover letter
-        st.text(formatted_content)
+        st.markdown(formatted_content)
       
 if __name__ == "__main__":
     main()
