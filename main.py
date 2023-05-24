@@ -47,14 +47,14 @@ def main():
         """
     
         # Define message templates for context and prompt
-        system_message_prompt = SystemMessagePromptTemplate.from_template("{context}")
-        human_message_prompt = HumanMessagePromptTemplate.from_template("{prompt}")
+        system_message_prompt = SystemMessagePromptTemplate.from_template(context_content)
+        human_message_prompt = HumanMessagePromptTemplate.from_template(prompt_content)
     
         # Build a chat prompt template from the system and human message templates
-        chat_prompt_template = ChatPromptTemplate.from_messages([system_message_prompt, human_message_prompt])
+        chat_prompt = ChatPromptTemplate.from_messages([system_message_prompt, human_message_prompt])
     
         # Generate the chat messages using the chat prompt template
-        messages = chat_prompt_template.format_prompt(context=context_content, prompt=prompt_content).to_messages()
+        messages = chat_prompt.format_prompt(company_name=company_name).to_messages()
     
         # Generate the cover letter
         chat = ChatOpenAI(streaming=True, callbacks=[StreamingStdOutCallbackHandler()], temperature=1)
