@@ -41,7 +41,7 @@ def main():
 
     if st.button('Generate Cover Letter'):
         # Prepare the context content and prompt content
-        context_content = str.join('\n', resume_pages + job_description_pages)
+        context_content = str.join('\n', [document.to_text() for document in resume_pages + job_description_pages])
         print(context_content)
         prompt_content = f"""
         I'm applying for a position at {company_name}. Given my skills and experience, which are outlined in my resume, I believe I would be a good fit. The job description for the role resonates with my professional profile. Furthermore, the recent news from the company has gotten me very excited about this opportunity. I would like to express my interest and enthusiasm for this role in a cover letter. Can you help me draft one?
