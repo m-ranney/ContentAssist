@@ -61,16 +61,8 @@ def main():
         
         response = chat(messages)
     
-        # Find the start and end of the cover letter
-        cover_letter_start = response.find('content="') + len('content="')
-        cover_letter_end = response.find('" additional_kwargs={} example=False')
-        cover_letter = response[cover_letter_start:cover_letter_end]
-    
-        # Remove any remaining newline escape sequences
-        cover_letter = cover_letter.replace("\\n", "\n")
-    
         # Display the cover letter
-        st.text(cover_letter)
+        st.text(response)
       
 if __name__ == "__main__":
     main()
