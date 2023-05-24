@@ -21,6 +21,8 @@ def main():
         # Use PyPDFLoader to load the resume
         loader = PyPDFLoader(fp.name)
         resume_pages = loader.load_and_split()
+    else:
+        st.warning('Please upload a resume.')
 
     st.subheader('Job Description URL')
     job_url = st.text_input('Input the URL here')
@@ -28,6 +30,8 @@ def main():
         # Use WebBaseLoader to load the job description
         loader = WebBaseLoader(job_url)
         job_description_pages = loader.load_and_split()
+    else:
+        st.warning('Please enter a job URL.')
 
     st.subheader('Company Name')
     company_name = st.text_input('Input the company name here')
@@ -38,9 +42,9 @@ def main():
     if st.button('Generate Cover Letter'):
         # Generate embeddings from the resume, job description, and news
         embeddings = OpenAIEmbeddings()
-        resume_embeddings = embeddings.embed_text(resume_pages)
-        job_description_embeddings = embeddings.embed_text(job_description_pages)
-        news_embeddings = embeddings.embed_text(company_news)
+        resume_embeddings = embeddings.create_embedding(resume_pages)
+        job_description_embeddings = embeddings.create_embedding(job_description_pages)
+        news_embeddings = embeddings.create_embedding(company_news)
 
         # Use the embeddings to generate a cover letter
         chat = ChatOpenAI()
@@ -49,7 +53,7 @@ def main():
         cover_letter = chat.generate(context, prompt)
         
         # Display the cover letter
-        st.text(cover_letter)
+        st.markdown(cover_letter)
 
 if __name__ == "__main__":
     main()
