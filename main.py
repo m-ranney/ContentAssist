@@ -62,7 +62,7 @@ def main():
         response = chat(messages)
     
         # Format the output
-        formatted_content = '\n'.join(response.splitlines())
+        formatted_content = '\n'.join(response.content.splitlines())
         
         # Display the cover letter
         st.text(formatted_content)
