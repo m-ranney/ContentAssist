@@ -5,6 +5,7 @@ from langchain.chat_models import ChatOpenAI
 from langchain.chains import RetrievalQA
 import openai
 import os
+import tempfile
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -14,8 +15,11 @@ def main():
     st.subheader('Upload Resume')
     resume = st.file_uploader('Choose a resume file', type=['pdf'])
     if resume is not None:
+        # Save UploadedFile to a temporary location
+        with tempfile.NamedTemporaryFile(delete=False) as fp:
+            fp.write(resume.read())
         # Use PyPDFLoader to load the resume
-        loader = PyPDFLoader(resume)
+        loader = PyPDFLoader(fp.name)
         resume_pages = loader.load_and_split()
 
     st.subheader('Job Description URL')
