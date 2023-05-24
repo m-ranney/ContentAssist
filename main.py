@@ -42,8 +42,8 @@ def main():
     if st.button('Generate Cover Letter'):
         # Generate embeddings from the resume, job description, and news
         embeddings = OpenAIEmbeddings()
-        resume_embeddings = embeddings.embed_documents(' '.join(resume_pages))
-        job_description_embeddings = embeddings.embed_documents(' '.join(job_description_pages))
+        resume_embeddings = embeddings.embed_documents([document.text for document in resume_pages])
+        job_description_embeddings = embeddings.embed_documents([document.text for document in job_description_pages])
         news_embeddings = embeddings.embed_test(company_news)
 
         # Use the embeddings to generate a cover letter
