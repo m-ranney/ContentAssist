@@ -1,9 +1,6 @@
 import streamlit as st
 from langchain.document_loaders import PyPDFLoader, WebBaseLoader
-from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.chat_models import ChatOpenAI
-from langchain.chains import RetrievalQA
-from langchain.vectorstores import Annoy
 import openai
 import os
 import tempfile
@@ -41,32 +38,15 @@ def main():
     company_news = st.text_area('Input the recent company news here')
 
     if st.button('Generate Cover Letter'):
-        # Generate embeddings from the resume, job description, and news
-        embeddings = OpenAIEmbeddings()
-        resume_embeddings = embeddings.embed_documents([str(document) for document in resume_pages])
-        job_description_embeddings = embeddings.embed_documents([str(document) for document in job_description_pages])
-        news_embeddings = embeddings.embed_documents([company_news])
+        # Concatenate the resume, job description, and news to form the context
+        context = "\n".join(str(document) for document in resume_pages + job_description_pages) + "\n" + company_news
 
-        # Create Annoy index
-        vector_db = Annoy(embedding_function=embeddings.embed_documents,
-                  index=100,
-                  metric='euclidean',
-                  docstore=None,
-                  index_to_docstore_id=None)
-        
-        for i, embedding in enumerate(resume_embeddings):
-            vector_db.add_item(i, embedding)
-        for i, embedding in enumerate(job_description_embeddings, start=len(resume_embeddings)):
-            vector_db.add_item(i, embedding)
-        for i, embedding in enumerate(news_embeddings, start=len(resume_embeddings)+len(job_description_embeddings)):
-            vector_db.add_item(i, embedding)
-        
-        vector_db.build()
-
-        # Use the embeddings to generate a cover letter
+        # Use the context to generate a cover letter
         chat = ChatOpenAI()
-        context = RetrievalQA(vector_db)
-        prompt = f"I am applying for a job at {company_name}."
+        prompt = f"""
+        I'm applying for a position at {company_name}. Given my skills and experience, which are outlined in my resume, I believe I would be a good fit. The job description for the role resonates with my professional profile. Furthermore, the recent news from the company has gotten me very excited about this opportunity.I would like to express my interest and enthusiasm for this role in a cover letter. Can you help me draft one?
+        """
+
         cover_letter = chat.generate(context, prompt)
             
         # Display the cover letter
