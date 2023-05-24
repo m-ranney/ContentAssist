@@ -3,7 +3,7 @@ from langchain.document_loaders import PyPDFLoader, WebBaseLoader
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import RetrievalQA
-from langchain.vectorstores import AnnoyVectorStore
+from langchain.vectorstores import Annoy
 import openai
 import os
 import tempfile
@@ -48,7 +48,7 @@ def main():
         news_embeddings = embeddings.embed_documents([company_news])
 
         # Create Annoy index
-        vector_db = AnnoyVectorStore(dimensions=len(resume_embeddings[0]))
+        vector_db = Annoy(dimensions=len(resume_embeddings[0]))
         
         for i, embedding in enumerate(resume_embeddings):
             vector_db.add_vector(i, embedding)
