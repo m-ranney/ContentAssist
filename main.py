@@ -1,6 +1,7 @@
 import streamlit as st
 from langchain.document_loaders import PyPDFLoader, WebBaseLoader
 from langchain.chat_models import ChatOpenAI
+from langchain.messages import Message
 import openai
 import os
 import tempfile
@@ -39,16 +40,19 @@ def main():
 
     if st.button('Generate Cover Letter'):
         # Concatenate the resume, job description, and news to form the context
-        context = "\n".join(str(document) for document in resume_pages + job_description_pages) + "\n" + company_news
-
-        # Use the context to generate a cover letter
-        chat = ChatOpenAI()
-        prompt = f"""
+        context_content = "\n".join(str(document) for document in resume_pages + job_description_pages) + "\n" + company_news
+        context = Message(role='system', content=context_content)
+    
+        # Formulate the prompt as a user message
+        prompt_content = f"""
         I'm applying for a position at {company_name}. Given my skills and experience, which are outlined in my resume, I believe I would be a good fit. The job description for the role resonates with my professional profile. Furthermore, the recent news from the company has gotten me very excited about this opportunity.I would like to express my interest and enthusiasm for this role in a cover letter. Can you help me draft one?
         """
-
-        cover_letter = chat.generate(context, prompt)
-            
+        prompt = Message(role='user', content=prompt_content)
+    
+        # Generate the cover letter using the context and prompt
+        conversation = [context, prompt]
+        cover_letter = chat.generate(conversation)
+                
         # Display the cover letter
         st.markdown(cover_letter)
 
