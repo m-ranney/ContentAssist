@@ -44,7 +44,7 @@ def main():
         embeddings = OpenAIEmbeddings()
         resume_embeddings = embeddings.embed_documents([str(document) for document in resume_pages])
         job_description_embeddings = embeddings.embed_documents([str(document) for document in job_description_pages])
-        news_embeddings = embeddings.embed_text(company_news)
+        news_embeddings = embeddings.embed_documents([company_news]) 
 
         # Use the embeddings to generate a cover letter
         chat = ChatOpenAI()
