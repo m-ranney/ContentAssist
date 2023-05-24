@@ -3,7 +3,7 @@ from langchain.document_loaders import PyPDFLoader, WebBaseLoader
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import RetrievalQA
-from langchain.indexes.vectorstores import AnnoyVectorStore
+from langchain.vectorstores import AnnoyVectorStore
 import openai
 import os
 import tempfile
