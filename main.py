@@ -61,8 +61,11 @@ def main():
         
         response = chat(messages)
     
+        # Format the output
+        formatted_content = '\n'.join(response.splitlines())
+        
         # Display the cover letter
-        st.text(response)
+        st.text(formatted_content)
       
 if __name__ == "__main__":
     main()
