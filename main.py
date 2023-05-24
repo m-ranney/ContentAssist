@@ -1,17 +1,29 @@
 import streamlit as st
+from langchain.document_loaders import PyPDFLoader
+from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.chat_models import ChatOpenAI
+from langchain.chains import RetrievalQA
+import openai
+import os
+
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 def main():
     st.title('AI Cover Letter Generator')
 
     st.subheader('Upload Resume')
-    resume = st.file_uploader('Choose a file')
+    resume = st.file_uploader('Choose a resume file', type=['pdf'])
     if resume is not None:
-        # Upload resume to LangChain and get context (TBD)
+        # Use PyPDFLoader to load the resume
+        loader = PyPDFLoader(resume)
+        resume_pages = loader.load_and_split()
 
     st.subheader('Job Description URL')
     job_url = st.text_input('Input the URL here')
     if job_url:
-        # Upload URL to LangChain and get context (TBD)
+        # Use WebBaseLoader to load the job description
+        loader = WebBaseLoader(job_url)
+        job_description_pages = loader.load_and_split()
 
     st.subheader('Company Name')
     company_name = st.text_input('Input the company name here')
@@ -20,7 +32,20 @@ def main():
     company_news = st.text_area('Input the recent company news here')
 
     if st.button('Generate Cover Letter'):
-        # Generate the cover letter (TBD)
+        # Generate embeddings from the resume, job description, and news
+        embeddings = OpenAIEmbeddings()
+        resume_embeddings = embeddings.embed_text(resume_pages)
+        job_description_embeddings = embeddings.embed_text(job_description_pages)
+        news_embeddings = embeddings.embed_text(company_news)
+
+        # Use the embeddings to generate a cover letter
+        chat = ChatOpenAI()
+        context = RetrievalQA([resume_embeddings, job_description_embeddings, news_embeddings])
+        prompt = f"I am applying for a job at {company_name}."
+        cover_letter = chat.generate(context, prompt)
+        
+        # Display the cover letter
+        st.text(cover_letter)
 
 if __name__ == "__main__":
     main()
