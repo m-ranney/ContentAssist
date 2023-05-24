@@ -4,3 +4,4 @@ openai
 langchain
 pypdf
 bs4
+tiktoken
