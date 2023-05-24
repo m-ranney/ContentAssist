@@ -48,10 +48,14 @@ def main():
 
         # Use the embeddings to generate a cover letter
         chat = ChatOpenAI()
-        context = RetrievalQA([resume_embeddings, job_description_embeddings, news_embeddings])
+        context = RetrievalQA({
+            'resume': resume_embeddings,
+            'job_description': job_description_embeddings,
+            'company_news': news_embeddings
+        })  # change made here
         prompt = f"I am applying for a job at {company_name}."
         cover_letter = chat.generate(context, prompt)
-        
+            
         # Display the cover letter
         st.markdown(cover_letter)
 
