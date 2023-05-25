@@ -67,7 +67,7 @@ def main():
         # Display the cover letter
         st.subheader('Cover Letter')
         st.markdown(formatted_content)
-        st.text_area("Edit your cover letter:", value=cover_letter)
+        st.text_area("Edit your cover letter:", value=formatted_content)
       
 if __name__ == "__main__":
     main()
