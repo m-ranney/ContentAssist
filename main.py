@@ -68,7 +68,21 @@ def main():
         # Format the output
         formatted_content = '\n'.join(response.content.splitlines())
 
+        # Display the cover letter
         st.subheader('Cover Letter')
-        st.text_area("Edit your cover letter:", value=formatted_content, height=800)
+        with st.form(key='cover_letter_form'):
+            # Initialize session state
+            if 'text' not in st.session_state:
+                st.session_state['text'] = formatted_content
+
+            # Use the stored value in session state for the text_area
+            st.session_state['text'] = st.text_area("Edit your cover letter:", value=st.session_state['text'], height=600)
+            if st.form_submit_button('Export Cover Letter'):
+                # Save the cover letter as a PDF file
+                with open('cover_letter.pdf', 'w') as f:
+                    f.write(st.session_state['text'])
+                st.success('Cover letter exported successfully!')
+
+
 if __name__ == "__main__":
     main()
