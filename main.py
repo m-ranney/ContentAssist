@@ -21,6 +21,7 @@ def main():
         # Use PyPDFLoader to load the resume
         loader = PyPDFLoader(fp.name)
         resume_pages = loader.load_and_split()
+        st.success('Resume uploaded successfully')
     else:
         st.warning('Please upload a resume.')
 
@@ -30,14 +31,17 @@ def main():
         # Use WebBaseLoader to load the job description
         loader = WebBaseLoader(job_url)
         job_description_pages = loader.load_and_split()
+        st.success('Job description loaded successfully')
     else:
         st.warning('Please enter a job URL.')
 
     st.subheader('Company Name')
     company_name = st.text_input('Input the company name here')
+    st.success('Company name entered successfully')
     
     st.subheader('Recent Company News')
     company_news = st.text_area('Input the recent company news here')
+    st.success('Recent company news entered successfully')
 
     if st.button('Generate Cover Letter'):
         # Prepare the context content and prompt content
@@ -67,14 +71,17 @@ def main():
         # Display the cover letter
         st.subheader('Cover Letter')
         with st.form(key='cover_letter_form'):
-            # Use session state to store the text in the textarea
-            with st.session_state.set('text', formatted_content):
-                text = st.text_area("Edit your cover letter:")
-                if st.form_submit_button('Export Cover Letter'):
-                    # Save the cover letter as a PDF file
-                    with open('cover_letter.pdf', 'w') as f:
-                        f.write(text)
-                    st.success('Cover letter exported successfully!')
+            # Initialize session state
+            if 'text' not in st.session_state:
+                st.session_state['text'] = formatted_content
+            
+            # Use the stored value in session state for the text_area
+            st.session_state['text'] = st.text_area("Edit your cover letter:", value=st.session_state['text'])
+            if st.form_submit_button('Export Cover Letter'):
+                # Save the cover letter as a PDF file
+                with open('cover_letter.pdf', 'w') as f:
+                    f.write(st.session_state['text'])
+                st.success('Cover letter exported successfully!')
       
 if __name__ == "__main__":
     main()
