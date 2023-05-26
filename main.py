@@ -57,7 +57,7 @@ def main():
         messages = chat_prompt.format_prompt(company_name=company_name, additional_info=additional_info).to_messages()
     
         # Generate the cover letter
-        chat = ChatOpenAI(streaming=True, callbacks=[StreamingStdOutCallbackHandler()], temperature=1)
+        chat = ChatOpenAI(streaming=True, callbacks=[StreamingStdOutCallbackHandler()], temperature=.9)
         
         response = chat(messages)
     
