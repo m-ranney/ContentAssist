@@ -21,7 +21,6 @@ def main():
         # Use PyPDFLoader to load the resume
         loader = PyPDFLoader(fp.name)
         resume_pages = loader.load_and_split()
-        st.success('Resume uploaded successfully')
     else:
         st.warning('Please upload a resume.')
 
@@ -31,23 +30,20 @@ def main():
         # Use WebBaseLoader to load the job description
         loader = WebBaseLoader(job_url)
         job_description_pages = loader.load_and_split()
-        st.success('Job description loaded successfully')
     else:
         st.warning('Please enter a job URL.')
 
     st.subheader('Company Name')
     company_name = st.text_input('Input the company name here')
-    st.success('Company name entered successfully')
     
-    st.subheader('Recent Company News')
-    company_news = st.text_area('Input the recent company news here')
-    st.success('Recent company news entered successfully')
+    st.subheader('Any additional information you would like to include?')
+    additional_info = st.text_area('Input any additional information here')
 
     if st.button('Generate Cover Letter'):
         # Prepare the context content and prompt content
         context_content = str.join('\n', [document.page_content for document in resume_pages + job_description_pages])
         prompt_content = f"""
-        I'm applying for a position at {company_name}. Given my skills and experience, which are outlined in my resume, I believe I would be a good fit. The job description for the role resonates with my professional profile. Furthermore, the recent news from the company has gotten me very excited about this opportunity. I would like to express my interest and enthusiasm for this role in a cover letter. Can you help me draft one?
+        I'm applying for a position at {company_name}. Given my skills and experience, which are outlined in my resume, I believe I would be a good fit. The job description for the role resonates with my professional profile, and I have provided this additional information that is relevant for my interest and fit for the job: {additional_info}. Furthermore, the strategic direction from the company has gotten me very excited about this opportunity. I would like to express my interest and enthusiasm for this role in a cover letter. Can you help me draft one?
         """
     
         # Define message templates for context and prompt
@@ -58,7 +54,7 @@ def main():
         chat_prompt = ChatPromptTemplate.from_messages([system_message_prompt, human_message_prompt])
     
         # Generate the chat messages using the chat prompt template
-        messages = chat_prompt.format_prompt(company_name=company_name).to_messages()
+        messages = chat_prompt.format_prompt(company_name=company_name, additional_info=additional_info).to_messages()
     
         # Generate the cover letter
         chat = ChatOpenAI(streaming=True, callbacks=[StreamingStdOutCallbackHandler()], temperature=1)
