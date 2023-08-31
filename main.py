@@ -23,19 +23,33 @@ def main():
     # 3. Supporting Content URLs
     st.subheader('Enter Supporting Content URLs')
     url1 = st.text_input('Enter first URL for supporting content:')
+    url1_context = st.text_area('Enter context for first URL:')
     url2 = st.text_input('Enter second URL for supporting content:')
+    url2_context = st.text_area('Enter context for second URL:')
     url3 = st.text_input('Enter third URL for supporting content:')
-    
-    # Fetch content from URLs
-    urls = [url for url in [url1, url2, url3] if url]
-    supporting_content_pages = []
-    for url in urls:
-        loader = WebBaseLoader(url)
-        content = loader.load_and_split()
-        # Assuming content is an instance of a class, you might need to extract the relevant text property.
-        supporting_content_pages.append(content.text)
-    aggregated_content = ' '.join(supporting_content_pages)
-    
+    url3_context = st.text_area('Enter context for third URL:')
+
+    if url1:
+        # Use WebBaseLoader to load the job description
+        loader = WebBaseLoader(url1)
+        url1_pages = loader.load_and_split()
+    else:
+        st.warning('Want a URL?')
+  
+    if url2:
+        # Use WebBaseLoader to load the job description
+        loader = WebBaseLoader(url2)
+        url2_pages = loader.load_and_split()
+    else:
+        st.warning('Want a URL?')
+
+    if url3:
+        # Use WebBaseLoader to load the job description
+        loader = WebBaseLoader(url3)
+        url3_pages = loader.load_and_split()
+    else:
+        st.warning('Want a URL?')
+  
     # 4. Ask the user if they want to provide any additional notes.
     st.subheader('Enter Additional Notes')
     notes = st.text_area('Any additional notes?')
@@ -43,13 +57,13 @@ def main():
 
     if st.button('Generate Topic Ideas'):
         # Prepare the prompt based on the type of blog
-        base_prompt = f"Given the topic '{topic}', and the supporting content: {aggregated_content}, along with additional notes: {notes}, provide 3-5"
+        base_prompt = f"You are a creative senior marketer. I want to write a blog about '{topic}'. I have provided some content that I'd like to use as context to help brainstorm creative blog ideas. This includes an article that is {url1_context} and the supporting content for that article is: {url1_pages}. Finally a few additional notes that I would like to incorporate into the ideation of blog ideation is: {notes}. Please provide 3-5"
         if blog_type == 'Hot Take':
-            prompt = base_prompt + " hot take blog ideas or headlines."
+            prompt = base_prompt + " hot take blog ideas or headlines. In which the idea or headline is an opinion or view that goes against the mainstream or could be somewhat taboo."
         elif blog_type == 'Deep Dive':
-            prompt = base_prompt + " deep dive blog ideas or headlines."
+            prompt = base_prompt + " deep dive blog ideas or headlines. In which the idea or headline is an exploration of some interesting details related to the topic."
         elif blog_type == 'Cross-Topic':
-            prompt = base_prompt + " cross-topic blog ideas or headlines."
+            prompt = base_prompt + " cross-topic blog ideas or headlines. In which the idea or headline is an exploration of both the topic and a seemingly irrelevant topic, but one that actually has some interesting connections."
     
         # Fetch results using OpenAI API
         response = openai.ChatCompletion.create(
@@ -57,7 +71,7 @@ def main():
           messages=[
             {
               "role": "system",
-              "content": aggregated_content  
+              "content": url1_pages  
             },
             {
               "role": "user",
