@@ -33,6 +33,7 @@ def main():
         # Use WebBaseLoader to load the job description
         loader = WebBaseLoader(url1)
         url1_pages = loader.load_and_split()
+        url1_text = " ".join([doc.text for doc in url1_pages if hasattr(doc, 'text')]) 
     else:
         st.warning('Want a URL?')
   
@@ -40,6 +41,7 @@ def main():
         # Use WebBaseLoader to load the job description
         loader = WebBaseLoader(url2)
         url2_pages = loader.load_and_split()
+        url2_text = " ".join([doc.text for doc in url2_pages if hasattr(doc, 'text')]) 
     else:
         st.warning('Want a URL?')
 
@@ -47,6 +49,7 @@ def main():
         # Use WebBaseLoader to load the job description
         loader = WebBaseLoader(url3)
         url3_pages = loader.load_and_split()
+        url3_text = " ".join([doc.text for doc in url3_pages if hasattr(doc, 'text')]) 
     else:
         st.warning('Want a URL?')
   
@@ -57,7 +60,7 @@ def main():
 
     if st.button('Generate Topic Ideas'):
         # Prepare the prompt based on the type of blog
-        base_prompt = f"You are a creative senior marketer. I want to write a blog about '{topic}'. I have provided some content that I'd like to use as context to help brainstorm creative blog ideas. This includes an article that is {url1_context} and the supporting content for that article is: {url1_pages}. Finally a few additional notes that I would like to incorporate into the ideation of blog ideation is: {notes}. Please provide 3-5"
+        base_prompt = f"You are a creative senior marketer. I want to write a blog about '{topic}'. I have provided some content that I'd like to use as context to help brainstorm creative blog ideas. This includes an article that is {url1_context} and the supporting content for that article is: {url1_text}. Finally a few additional notes that I would like to incorporate into the ideation of blog ideation is: {notes}. Please provide 3-5"
         if blog_type == 'Hot Take':
             prompt = base_prompt + " hot take blog ideas or headlines. In which the idea or headline is an opinion or view that goes against the mainstream or could be somewhat taboo."
         elif blog_type == 'Deep Dive':
@@ -71,7 +74,7 @@ def main():
           messages=[
             {
               "role": "system",
-              "content": url1_pages  
+              "content": url1_text  
             },
             {
               "role": "user",
