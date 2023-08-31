@@ -26,8 +26,6 @@ def main():
     url1_context = st.text_area('Enter context for first URL:')
     url2 = st.text_input('Enter second URL for supporting content:')
     url2_context = st.text_area('Enter context for second URL:')
-    url3 = st.text_input('Enter third URL for supporting content:')
-    url3_context = st.text_area('Enter context for third URL:')
 
     if url1:
         # Use WebBaseLoader to load the job description
@@ -82,7 +80,7 @@ def main():
     
         # Display topic ideas
         st.subheader('Generated Topic Ideas')
-        st.write(response.choices[0].text.strip())
+        st.write(response.choices[0]['message']['content'].strip())
 
 if __name__ == "__main__":
     main()
