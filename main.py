@@ -132,7 +132,7 @@ def main():
       
         # All prompt information for content creation
         if st.button('Generate Content'):
-            base_prompt = f"As a Senior Copywriter with over 10 years of experience, and a side hustle of owning a very successful blog focused on modern technology, known for its smart humor. Please help me write a '{content_blog_type}' blog about '{blog_topic}'. The target audience for this blog is '{audience}'. We respect the intelligence of all of our readers so the content of the blog should lean on intelligent discourse. The response we want from the target audience is that they are '{reader_response}'. Some additional information about the blog is that I want it to be a"
+            base_prompt = f"As a Senior Copywriter with over 10 years of experience, and a side hustle of owning a very successful blog focused on modern technology, known for its smart humor. Please help me write a '{content_blog_type}' blog about '{blog_topic}'. The target audience for this blog is '{audience}'. We respect the intelligence of all of our readers so the content of the blog should lean on intelligent and entertaining discourse. The response we want from the target audience is that they are '{reader_response}'. Some additional information about the blog is that I want it to be a"
             
             if content_blog_type == 'Hot Take':
                 base_prompt += f" hot take, meaning that it is a quickly produced, strongly worded, and often deliberately provocative or sensational opinion or reaction. The angle of the hot take is: '{angle}'."
