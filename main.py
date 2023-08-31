@@ -1,10 +1,7 @@
 import streamlit as st
 from langchain.document_loaders import WebBaseLoader
-from langchain.chat_models import ChatOpenAI
-from langchain.prompts import ChatPromptTemplate, HumanMessagePromptTemplate, SystemMessagePromptTemplate
 import openai
 import os
-import tempfile
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -139,7 +136,7 @@ def main():
             model="gpt-4",
             messages=[{"role": "user", "content": base_prompt}],
             temperature=1,
-            max_tokens=2000,
+            max_tokens=5000,
             top_p=1,
             frequency_penalty=0,
             presence_penalty=0.25
