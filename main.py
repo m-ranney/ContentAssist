@@ -93,20 +93,24 @@ def main():
         blog_topic = st.text_input('Provide the topic of the blog:')
     
         st.subheader('Select Blog Type')
-        content_blog_type = st.selectbox('What type of blog are you writing?', ['Select', 'Hot Take', 'Deep Dive', 'Cross-Topic'])
+        content_blog_type = st.selectbox('What type of blog are you writing?', ['Select', 'Hot Take', 'Deep Dive', 'Juxtaposition / Fusion'])
     
         if content_blog_type == 'Hot Take':
-            angle = st.text_input('What angle do you want to take with the hot take?')
+            angle = st.text_input('The angle of the hot take is:')
         elif content_blog_type == 'Deep Dive':
-            focus = st.text_input('What focus do you want for the deep dive?')
-        elif content_blog_type == 'Cross-Topic':
-            cross_focus = st.text_input('What focus do you want for the cross topic?')
+            focus = st.text_input('I want the focus of the deep dive to be:')
+        elif content_blog_type == 'Juxtaposition / Fusion':
+            cross_focus = st.text_input('The focus for Juxtaposition / Fusion blog is to explore:')
+
+        audience = st.selectbox('Who is the target audience of this blog?', ['Select', 'Tech Professionals', 'Educated Millenials', 'Emotional Gen-Zs', 'Educated Millenials and Gen-Zs', 'Uneducated Middle Aged Americans'])
+
+        reader_response = st.selectbox('What response do you want from the readers?', ['Select', 'curious to learn more about the topic', 'frustrated that the blog opposes their typical views on the topic', 'surprised that they had not made a connection between these topics before', 'amused by the funny take on the topic'])
     
         st.subheader('Supporting Content URLs')
         support_url1 = st.text_input('Enter the first URL for supporting content:')
-        support_url1_type = st.selectbox('How does this URL serve your topic?', ['Select', 'Supporting', 'Not Supporting', 'Pure Context'], key='url1_type_selectbox')
+        support_url1_type = st.selectbox('How does this URL serve your topic?', ['Select', 'supportive', 'not supportive', 'to be used purely for context in relation'], key='url1_type_selectbox')
         support_url2 = st.text_input('Enter the second URL for supporting content:')
-        support_url2_type = st.selectbox('How does this URL serve your topic?', ['Select', 'Supporting', 'Not Supporting', 'Pure Context'], key='url2_type_selectbox')
+        support_url2_type = st.selectbox('How does this URL serve your topic?', ['Select', 'supportive', 'not supportive', 'to be used purely for context in relation'], key='url2_type_selectbox')
     
         url1_text = ""
         if support_url1:
@@ -123,19 +127,21 @@ def main():
         keywords = st.text_input('Provide any keywords to be utilized in the copy:')
         blog_length = st.text_input('Desired length of the blog (in number of words):')
         tone = st.selectbox('What tone would you like for the content?', ['Casual', 'Comedic', 'Pompous', 'Dry'])
-        theme = st.selectbox('Choose the overall theme of the topic:', ['Analytical', 'Satirical', 'Controversial', 'Comedic', 'Entertaining', 'Childish', 'Insightful', 'Deep'])
-    
+        theme = st.selectbox('Choose the overall theme of the topic:', ['analytical', 'satirical', 'controversial', 'comedic', 'entertaining', 'childish', 'insightful', 'deep', 'snobby', 'sarcastic', 'dark', 'dark humor', 'extravegent', 'subtle', 'mysterious'])
+
+      
+        # All prompt information for content creation
         if st.button('Generate Content'):
-            base_prompt = f"I'm aiming to write a '{content_blog_type}' blog about '{blog_topic}'. Here are the specifics:"
+            base_prompt = f"As a Senior Copywriter with over 10 years of experience, and a side hustle of owning a very successful blog focused on modern technology, known for its smart humor. Please help me write a '{content_blog_type}' blog about '{blog_topic}'. The target audience for this blog is '{audience}'. We respect the intelligence of all of our readers so the content of the blog should lean on intelligent discourse. The response we want from the target audience is that they are '{reader_response}'. Some additional information about the blog is that I want it to be a"
             
             if content_blog_type == 'Hot Take':
-                base_prompt += f" The angle of the hot take is '{angle}'."
+                base_prompt += f" hot take, meaning that it is a quickly produced, strongly worded, and often deliberately provocative or sensational opinion or reaction. The angle of the hot take is: '{angle}'."
             elif content_blog_type == 'Deep Dive':
-                base_prompt += f" The focus is to dive deep into '{focus}'."
-            elif content_blog_type == 'Cross-Topic':
-                base_prompt += f" The focus for cross-topic exploration is '{cross_focus}'."
+                base_prompt += f" deep dive, meaning that it is an exhaustive investigation, study, or analysis of a question or topic. I want the focus of the deep dive to be: '{focus}'."
+            elif content_blog_type == 'Juxtaposition / Fusion':
+                base_prompt += f" Juxtaposition / Fusion of the topics, meaning looking at the two or more topics side by side to compare or contrast or to create an interesting effect among the different topics. The focus for Juxtaposition / Fusion blog is to explore: '{cross_focus}'."
             
-            base_prompt += f" I have found two articles, the first one is '{support_url1_type}' and its content is: '{url1_text}'. The second one is '{support_url2_type}' and its content is: '{url2_text}'. I would like to emphasize on these keywords: '{keywords}'. The desired length is about {blog_length} words and should be written in a '{tone}' tone with an overall '{theme}' theme."
+            base_prompt += f" I have found two articles to support and enhance the quality of the blog. Please use the information provided by these articles, as you see fit, to create interesting connections, provide additional smart humor, or to generally enhance the quality of the blog itself. The first article text is: '{support_url1_type}'. This article is '{url1_text}' of the topic. The second article text is '{support_url2_type}'. This article is '{url2_text}' of the topic. Finally, I would like to incorporate the following keywords as naturally as possible to promote SEO: '{keywords}'. The desired length of the blog is roughly {blog_length} words. The blog should be written in a '{tone}' tone, but always with an emphasis on using less jargon and more normal casual communication. And the overall theme of the blog should be: '{theme}'. Thanks so much for your help, you are the best Senior Copywriter in the world!"
         
             response = openai.ChatCompletion.create(
                 model="gpt-4",
