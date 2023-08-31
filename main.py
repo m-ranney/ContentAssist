@@ -123,16 +123,17 @@ def main():
             loader = WebBaseLoader(support_url2)
             url2_pages = loader.load_and_split()
             url2_text = " ".join([doc.text for doc in url2_pages if hasattr(doc, 'text')]) 
-      
+
+        st.subheader('Blog Overview Settings')
         keywords = st.text_input('Provide any keywords to be utilized in the copy:')
         blog_length = st.text_input('Desired length of the blog (in number of words):')
         tone = st.selectbox('What tone would you like for the content?', ['Casual', 'Comedic', 'Pompous', 'Dry'])
-        theme = st.selectbox('Choose the overall theme of the topic:', ['analytical', 'satirical', 'controversial', 'comedic', 'entertaining', 'childish', 'insightful', 'deep', 'snobby', 'sarcastic', 'dark', 'dark humor', 'extravegent', 'subtle', 'mysterious'])
+        theme = st.selectbox('Choose the overall theme of the topic:', ['analytical', 'satirical', 'controversial', 'comedic', 'entertaining', 'childish', 'insightful', 'deep', 'snobby', 'sarcastic', 'dark', 'dark humor', 'extravagant', 'subtle', 'mysterious'])
 
       
         # All prompt information for content creation
         if st.button('Generate Content'):
-            base_prompt = f"As a Senior Copywriter with over 10 years of experience, and a side hustle of owning a very successful blog focused on modern technology, known for its smart humor. Please help me write a '{content_blog_type}' blog about '{blog_topic}'. The target audience for this blog is '{audience}'. We respect the intelligence of all of our readers so the content of the blog should lean on intelligent and entertaining discourse. The response we want from the target audience is that they are '{reader_response}'. Some additional information about the blog is that I want it to be a"
+            base_prompt = f"As a Senior Copywriter with over 10 years of experience, and a side hustle of owning a very successful blog focused on modern technology, known for its smart humor. Please help me write a '{content_blog_type}' blog about '{blog_topic}'. The target audience for this blog is '{audience}'. We respect the intelligence of all of our readers so the content of the blog should lean on intelligent and entertaining discourse. Regarding generating written content, two factors are crucial to be in the highest degree, perplexity and burstiness. Perplexity measures the complexity of the text. Separately, burstiness compares the variations of sentences. Humans tend to write with greater burstiness, for example, with some longer or more complex sentences alongside shorter ones. Al sentences tend to be more uniform. Therefore, generated text content must have the highest degree of perplexity and the highest degree of burstiness. The other two factors are that writing should be maximum contextually relevant and maximum coherent. Please incorporate these thoughts into your writing! The response we want from the target audience is that they are '{reader_response}'. Some additional information about the blog is that I want it to be a"
             
             if content_blog_type == 'Hot Take':
                 base_prompt += f" hot take, meaning that it is a quickly produced, strongly worded, and often deliberately provocative or sensational opinion or reaction. The angle of the hot take is: '{angle}'."
