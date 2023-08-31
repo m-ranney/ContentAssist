@@ -44,14 +44,6 @@ def main():
         url2_text = " ".join([doc.text for doc in url2_pages if hasattr(doc, 'text')]) 
     else:
         st.warning('Want a URL?')
-
-    if url3:
-        # Use WebBaseLoader to load the job description
-        loader = WebBaseLoader(url3)
-        url3_pages = loader.load_and_split()
-        url3_text = " ".join([doc.text for doc in url3_pages if hasattr(doc, 'text')]) 
-    else:
-        st.warning('Want a URL?')
   
     # 4. Ask the user if they want to provide any additional notes.
     st.subheader('Enter Additional Notes')
