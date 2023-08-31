@@ -102,9 +102,9 @@ def main():
 
     st.subheader('Supporting Content URLs')
     support_url1 = st.text_input('Enter the first URL for supporting content:')
-    support_url1_type = st.selectbox('How does this URL serve your topic?', ['Select', 'Supporting', 'Not Supporting', 'Pure Context'])
+    support_url1_type = st.selectbox('How does this URL serve your topic?', ['Select', 'Supporting', 'Not Supporting', 'Pure Context'], key='url1_type_selectbox')
     support_url2 = st.text_input('Enter the second URL for supporting content:')
-    support_url2_type = st.selectbox('How does this URL serve your topic?', ['Select', 'Supporting', 'Not Supporting', 'Pure Context'])
+    support_url2_type = st.selectbox('How does this URL serve your topic?', ['Select', 'Supporting', 'Not Supporting', 'Pure Context'], key='url2_type_selectbox')
 
     url1_text = ""
     if support_url1:
