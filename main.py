@@ -20,7 +20,7 @@ def main():
         
         # 2. Ask the user to Select the type of blog they want to write: Hot Take, Deep Dive, Cross-Topic
         st.subheader('Enter System Role')
-        system_role = st.text_input('What type of blog do you want to write?')
+        system_role = st.text_input('What role should the system take? Creative storyteller?')
       
         # 4. Ask the user if they want to provide any additional notes.
         st.subheader('Enter Additional Notes')
@@ -28,7 +28,7 @@ def main():
       
         if st.button('Generate Topic Ideas'):
             # Prepare the prompt based on the type of blog
-            prompt = f"I want to create a table of short engaging summaries about events that actually happened but are so unique and out of the ordinary that they are hard to believe they actually happened in real life. The summaries need to be under 100 words and written to retain the readers attention. These real life event summaries should be about '{topic}'. Please return these in a table with the following columns: Title (a title of the story), Year (year the event occured, or an approximate year if the exact date is unknown), Summary (the 100 word or less summary of the event). Please provide 20 event summaries."
+            prompt = f"I want to create a table of short captivating summaries about events that actually happened but are so unique and out of the ordinary that they are hard to believe they actually happened in real life. The summaries should be between 80-120 words and while focused on an individual event, they should include a beginning, middle and end. Where appropriate use powerful words and evocative imagery. These real life event summaries should be about '{topic}'. Please return these in a table with the following columns: Title (a title of the story), Year (year the event occured, or an approximate year if the exact date is unknown), Summary (the 100 word or less summary of the event). Please provide 5 event summaries."
         
             # Fetch results using OpenAI API
             response = openai.ChatCompletion.create(
